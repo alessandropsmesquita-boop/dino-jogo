@@ -1,0 +1,186 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #222222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+.game-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+
+.score-board {
+    position: absolute;
+    top: -25px;
+    right: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18px;
+    color: #f3f3f3;
+    font-weight: bold;
+    z-index: 10;
+}
+
+#high-score {
+    color: #888888;
+    margin-right: 15px;
+}
+
+.game {
+    width: 600px;
+    height: 200px;
+    background-image: url(img/background.png);
+    background-repeat: repeat-x;
+    background-position: 0 bottom;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 1s ease; /* Transição suave de clima */
+}
+
+/* --- DESIGN E EFEITOS DAS ESTAÇÕES --- */
+
+/* 0+ pontos - Outono: Clima Laranja Ventoso */
+.season-autumn { background-color: #e29c5d; border-bottom: 3px solid #7c3f12; }
+.season-autumn #weather-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.15) 5%, transparent 5%) repeat;
+    background-size: 120px 15px;
+    animation: wind-flow 0.8s infinite linear;
+    opacity: 0.7;
+}
+@keyframes wind-flow {
+    0% { background-position: 0 0; }
+    100% { background-position: -120px 30px; }
+}
+
+/* 100+ pontos - Inverno: Tempestade de Chuva Intensa */
+.season-winter { background-color: #4b6584; border-bottom: 3px solid #2d3d52; }
+.season-winter #weather-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.4) 45%, transparent 50%) repeat;
+    background-size: 30px 60px;
+    animation: rain-fall 0.2s infinite linear;
+}
+@keyframes rain-fall {
+    0% { background-position: 0 0; }
+    100% { background-position: -30px 60px; }
+}
+
+/* 200+ pontos - Primavera: Verde Claro com Brilho Solar Alvorecer */
+.season-spring { background-color: #a8e6cf; border-bottom: 3px solid #3b7a57; }
+.season-spring #weather-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.6) 0%, transparent 50%);
+    animation: sun-breeze 3s infinite alternate ease-in-out;
+}
+@keyframes sun-breeze {
+    0% { opacity: 0.4; transform: scale(1); }
+    100% { opacity: 0.8; transform: scale(1.05); }
+}
+
+/* 300+ pontos - Verão: Vermelho/Amarelo do Deserto com Ondas de Calor */
+.season-summer { background-color: #ff6b6b; border-bottom: 3px solid #b33939; }
+.season-summer #weather-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(255, 159, 67, 0.3), transparent);
+    animation: heatwave-glow 0.5s infinite alternate ease-in-out;
+}
+@keyframes heatwave-glow {
+    0% { filter: brightness(1); opacity: 0.6; }
+    100% { filter: brightness(1.25); opacity: 0.9; }
+}
+
+
+/* --- ENTIDADES DO JOGO --- */
+
+#dino {
+    width: 50px;
+    height: 50px;
+    background-image: url(img/dino.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: 0;
+    left: 40px;
+    z-index: 5;
+}
+
+.jump {
+    animation: dino-jump 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes dino-jump {
+    0% { bottom: 0; }
+    50% { bottom: 100px; }
+    100% { bottom: 0; }
+}
+
+#obstacle {
+    position: absolute;
+    bottom: 0;
+    left: 600px;
+    z-index: 4;
+}
+
+/* O único obstáculo: O Cacto Clássico da sua pasta */
+.obstacle-cactus {
+    width: 25px;
+    height: 45px;
+    background-image: url(img/cactus.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+/* --- TELA DE FIM DE JOGO --- */
+#game-over-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+#game-over-screen h2 {
+    color: white;
+    font-family: monospace;
+    letter-spacing: 6px;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+#restart-btn {
+    background: #ffffff;
+    border: none;
+    font-size: 24px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.hidden { display: none !important; }
